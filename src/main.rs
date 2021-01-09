@@ -1,9 +1,37 @@
 use rand::Rng;
 use std::cmp::Ordering;
 use std::io;
+use std::{thread, time};
+use std::fmt;
 
 fn main() {
-    game()
+    let x = letting_x();
+    println!("{}", x);
+
+    let x = String::from("SomeBody");
+    println!("bytes is = {}", SliceDisplay(x.as_bytes()));
+}
+
+fn letting_x() -> String {
+    let x = String::from("123");
+    return x
+}
+
+struct SliceDisplay<'a, T: 'a>(&'a [T]);
+
+impl<'a, T: fmt::Display + 'a> fmt::Display for SliceDisplay<'a, T> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let mut first = true;
+        for item in self.0 {
+            if !first {
+                write!(f, ", {}", item)?;
+            } else {
+                write!(f, "{}", item)?;
+            }
+            first = false;
+        }
+        Ok(())
+    }
 }
 
 fn game() {
@@ -25,7 +53,7 @@ fn game() {
             Err(_) => {
                 println!("please type a number");
                 continue;
-            },
+            }
         };
 
         println!("You guessed: {}", guess);
